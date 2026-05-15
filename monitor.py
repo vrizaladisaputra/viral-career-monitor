@@ -167,4 +167,4 @@ if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "test":
         run_monitor()
     else:
-        run_monitor()
+        main()
