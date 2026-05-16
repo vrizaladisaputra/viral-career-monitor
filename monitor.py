@@ -43,7 +43,30 @@ CAREER_KEYWORDS = [
 # ============================================================
 # FILTER JUDUL - pastikan relevan karir
 # ============================================================
-RELEVANT_TITLE_KEYWORDS = [
+RELEVANT_TITLE_KEYWORDS = 
+# ============================================================
+# FILTER EXCLUDE - konten yang TIDAK relevan
+# ============================================================
+EXCLUDE_KEYWORDS = [
+    # Politik & pemerintahan
+    "hakim", "jaksa", "polisi", "tni", "pns", "asn", "pegawai negeri",
+    "pemerintah", "dpr", "dprd", "menteri", "presiden", "gubernur",
+    "walikota", "bupati", "mahkamah", "pengadilan", "korupsi", "kpk",
+    "anggaran", "apbn", "subsidi", "pajak pemerintah", "birokrasi",
+
+    # Drama & hiburan
+    "drama china", "drama cina", "drama korea", "drakor", "cdrama",
+    "drama thailand", "anime", "film", "sinetron", "ftv", "serial",
+    "episode", "ending", "spoiler", "review drama", "nonton",
+
+    # Olahraga
+    "pemain bola", "transfer pemain", "liga", "klub", "gaji pemain",
+
+    # Selebriti
+    "artis", "seleb", "influencer gaji", "youtuber gaji",
+]
+
+[
     "gaji", "promosi", "karir", "kerja", "korporat",
     "resign", "interview", "salary", "jabatan", "kantor",
     "atasan", "bos", "perusahaan", "karyawan", "fresh graduate",
@@ -55,8 +78,15 @@ WIB = pytz.timezone("Asia/Jakarta")
 
 def is_career_relevant(title):
     title_lower = title.lower()
+    
+    # Cek apakah masuk exclude list dulu
+    if any(kw in title_lower for kw in EXCLUDE_KEYWORDS):
+        print(f"   ⛔ Excluded: {title[:50]}")
+        return False
+    
+    # Baru cek apakah relevan karir
     return any(kw in title_lower for kw in RELEVANT_TITLE_KEYWORDS)
-
+    
 def search_youtube_videos(keyword):
     published_after = (datetime.now(pytz.utc) - timedelta(hours=48)).strftime("%Y-%m-%dT%H:%M:%SZ")
     url = "https://www.googleapis.com/youtube/v3/search"
